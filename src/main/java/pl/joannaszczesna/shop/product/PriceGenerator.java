@@ -1,4 +1,4 @@
-package pl.joannaszczesna.shop;
+package pl.joannaszczesna.shop.product;
 
 import java.math.BigDecimal;
 

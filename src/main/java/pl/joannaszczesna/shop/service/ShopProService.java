@@ -1,10 +1,11 @@
-package pl.joannaszczesna.shop;
+package pl.joannaszczesna.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import pl.joannaszczesna.shop.product.PriceGenerator;
+import pl.joannaszczesna.shop.product.Product;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -13,7 +14,7 @@ import java.math.RoundingMode;
 @Component
 @Profile("pro")
 @ConfigurationProperties(prefix = "shop-attribute-pro")
-class ShopPro extends ShopStart {
+class ShopProService extends ShopStartService {
 
 //  @Value("shop-attribute-pro.tax")
     private int tax;
@@ -21,30 +22,30 @@ class ShopPro extends ShopStart {
     private int discount;
 
     @Autowired
-    ShopPro(PriceGenerator generator) {
+    ShopProService(PriceGenerator generator) {
         super(generator);
     }
 
-    ShopPro setTax(int tax) {
+    ShopProService setTax(int tax) {
         this.tax = tax;
         return this;
     }
 
-    ShopPro setDiscount(int discount) {
+    ShopProService setDiscount(int discount) {
         this.discount = discount;
         return this;
     }
 
     @Override
-    public void addToBasket(String name, BigDecimal price) {
-        System.out.println("addToBasket from " + ShopPro.class);
+    public void addToBasket(Product product) {
+        System.out.println("addToBasket from " + ShopProService.class);
 
-        BigDecimal countedTax = countFraction(price, tax);
-        BigDecimal priceWithTax = price.add(countedTax);
+        BigDecimal countedTax = countFraction(product.price(), tax);
+        BigDecimal priceWithTax = product.price().add(countedTax);
         BigDecimal countedDiscount = countFraction(priceWithTax, discount);
         BigDecimal discountPrice = priceWithTax.subtract(countedDiscount);
 
-        super.addToBasket(name, discountPrice);
+        super.addToBasket(product);
     }
 
     private BigDecimal countFraction(BigDecimal price, int percentage) {

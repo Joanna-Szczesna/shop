@@ -1,10 +1,10 @@
-package pl.joannaszczesna.shop;
+package pl.joannaszczesna.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import pl.joannaszczesna.shop.product.PriceGenerator;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -13,30 +13,27 @@ import java.math.RoundingMode;
 @Component
 @Profile("plus")
 @ConfigurationProperties(prefix = "shop-attribute")
-class ShopPlus extends ShopStart {
+class ShopPlusService extends ShopStartService {
 
-    //    @Value("shop-attribute.tax")
     private int tax;
 
     @Autowired
-    ShopPlus(PriceGenerator generator) {
+    ShopPlusService(PriceGenerator generator) {
         super(generator);
     }
 
-    ShopPlus setTax(int tax) {
+    ShopPlusService setTax(int tax) {
         this.tax = tax;
         return this;
     }
 
     @Override
-    public void addToBasket(String name, BigDecimal price) {
-        System.out.println("addToBasket from " + ShopPlus.class);
-        BigDecimal countedTax = price.multiply(BigDecimal.valueOf(tax))
+    public BigDecimal countSummaryPrice() {
+        BigDecimal priceWithoutTax = super.countSummaryPrice();
+        BigDecimal countedTax = priceWithoutTax.multiply(BigDecimal.valueOf(tax))
                 .divide(BigDecimal.valueOf(100),
                         new MathContext(2, RoundingMode.FLOOR));
-        BigDecimal priceWithTax = price.add(countedTax);
-        super.addToBasket(name, priceWithTax);
+
+        return priceWithoutTax.add(countedTax);
     }
-
-
 }
