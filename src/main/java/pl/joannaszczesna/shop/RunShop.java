@@ -19,7 +19,6 @@ class RunShop {
 
     @Autowired
     public RunShop(Shop shop) {
-
         this.shop = shop;
         this.generator = new ProductPriceGenerator();
     }
@@ -27,8 +26,12 @@ class RunShop {
     @EventListener(ApplicationReadyEvent.class)
     public void run(){
         IntStream.rangeClosed(1, 5)
-                .forEach(n-> shop.addToBasket(
-                        new Product( "item"+n, generatePrice())));
+                .forEach(n-> shop.addNewProduct(
+                         "item"+n, n, generatePrice()));
+
+        IntStream.rangeClosed(1, 5)
+                .forEach(shop::addToCart);
+
 
         System.out.println(shop.getInfo());
     }

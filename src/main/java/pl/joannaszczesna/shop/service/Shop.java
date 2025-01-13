@@ -6,8 +6,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface Shop {
-    void addToBasket(Product product);
-    List<Product> getBasket();
+    void addToCart(int productId);
+    List<Product> getCart();
     BigDecimal countSummaryPrice();
     String getInfo();
+    void addNewProduct(String productName, int productId, BigDecimal price);
+    void clearCart();
 }

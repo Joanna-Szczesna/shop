@@ -12,25 +12,24 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = TestConfig.class)
-@ActiveProfiles("plus")
+@ActiveProfiles("pro")
 @EnableAutoConfiguration
-class ShopPlusServiceTest {
+class ShopProServiceTest {
     private static final BigDecimal FIXED_PRICE = BigDecimal.valueOf(100.0);
 
     @Autowired
-    Shop shopPlus;
+    Shop shopPro;
 
     @BeforeEach
     void setUp() {
-        this.shopPlus.clearCart();
-        this.shopPlus.addNewProduct("productName", 1, FIXED_PRICE);
+        this.shopPro.clearCart();
+        this.shopPro.addNewProduct("productName", 1, FIXED_PRICE);
     }
-
     @Test
-    void addOneProduct_summaryPriceWithTax() {
-        shopPlus.addToCart(1);
-        BigDecimal actualPrice = shopPlus.countSummaryPrice();
+    void addOneProduct_summaryPriceWithTaxAndDiscount() {
+        shopPro.addToCart(1);
+        BigDecimal actualPrice = shopPro.countSummaryPrice();
 
-        assertEquals(122.0, actualPrice.doubleValue());
+        assertEquals(117.0, actualPrice.doubleValue());
     }
 }
