@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile("start")
 class ShopStartService implements Shop {
     private List<Product> cart;
     private final TaxPolicy taxPolicy;
@@ -55,7 +54,7 @@ class ShopStartService implements Shop {
     @EventListener(ApplicationReadyEvent.class)
     @Override
     public String getInfo() {
-//        log.atInfo().log("ShopStart");
+
         return countSummaryPrice().toString();
     }
 

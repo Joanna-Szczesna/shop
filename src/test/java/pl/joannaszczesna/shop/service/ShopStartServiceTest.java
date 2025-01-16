@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = TestConfig.class)
 @EnableAutoConfiguration
-//@Profile("start")
 class ShopStartServiceTest {
     @Autowired
     private Shop shop;
